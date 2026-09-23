@@ -800,6 +800,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);overflow-x:h
         <div class="api-info">
           <div class="api-info-name">claude-sonnet-4-20250514</div>
           <div class="api-info-sub" data-i="apiSub">Web search activé · Analyse sémantique profonde</div>
+          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+            <div style="font-size:10px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">🔧 URL Proxy Cloudflare</div>
+            <input type="text" id="proxy-url-input"
+              placeholder="https://cx-proxy.xxx.workers.dev"
+              style="width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:var(--mono);font-size:10px;color:var(--text);background:var(--surface2);outline:none;transition:border-color .2s"
+              oninput="updateProxyUrl(this.value)"
+              onfocus="this.style.borderColor='var(--blue)'"
+              onblur="this.style.borderColor='var(--border)'">
+            <div id="proxy-status" style="font-size:10px;margin-top:4px;color:var(--red)">⚠ Non configuré — fonctions IA désactivées</div>
+          </div>
         </div>
       </div>
       <div class="terminal-area">
@@ -970,10 +980,11 @@ const PROXY_URL = '';   // ← coller ici votre URL Cloudflare Worker
 
 // Helper : appel API via proxy avec gestion d'erreur claire
 async function callClaude(payload) {
-  if (!PROXY_URL) {
-    throw new Error('🔧 Proxy non configuré — voir PROXY_URL dans le code source (ligne ~800)');
+  const proxyUrl = getProxyUrl();
+  if (!proxyUrl) {
+    throw new Error('Proxy non configuré');
   }
-  const res = await fetch(PROXY_URL, {
+  const res = await fetch(proxyUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
@@ -1331,20 +1342,19 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 
 function showProxyWarning(){
-  // Inject warning banner into agent tab and advisor tab
   const warn = `<div id="proxy-warn" style="margin:16px;padding:14px 18px;background:#fff8ec;border:2px solid #e8900a;border-radius:12px;display:flex;align-items:flex-start;gap:12px">
     <span style="font-size:22px;flex-shrink:0">⚙️</span>
     <div>
       <div style="font-size:14px;font-weight:700;color:#d45d10;margin-bottom:6px">Proxy API non configuré — fonctions IA désactivées</div>
       <div style="font-size:12px;color:#7a5500;line-height:1.7">
-        Les onglets <strong>Agent IA Veille</strong> et <strong>Conseiller IA</strong> nécessitent un proxy Cloudflare Worker pour appeler l'API Anthropic.<br>
-        <strong>→ Voir le fichier <code style="background:#fff3d0;padding:1px 5px;border-radius:3px">cloudflare-worker.js</code> fourni avec le site pour la procédure de déploiement (5 minutes).</strong><br>
-        Une fois déployé, collez l'URL du Worker dans la variable <code style="background:#fff3d0;padding:1px 5px;border-radius:3px">PROXY_URL</code> en haut du code source.
+        <strong>→ Collez l'URL de votre Cloudflare Worker dans le champ en bas de l'onglet ⚡ Agent IA Veille.</strong><br>
+        L'URL est mémorisée dans votre session — plus besoin de modifier le code.<br>
+        Pas encore de Worker ? Voir le fichier <code style="background:#fff3d0;padding:1px 5px;border-radius:3px">cloudflare-worker.js</code> (déploiement en 5 min sur workers.cloudflare.com, gratuit).
       </div>
     </div>
   </div>`;
   const termBody = document.getElementById('term-body');
-  if(termBody) termBody.insertAdjacentHTML('afterbegin', `<div style="margin:8px 0;padding:12px;background:#1a2a10;border:1px solid #4a7020;border-radius:8px;font-family:var(--mono);font-size:11px;color:#90c040">⚙ Proxy non configuré — Voir <span style="color:#f0c040">PROXY_URL</span> dans le code source pour activer l'IA</div>`);
+  if(termBody) termBody.insertAdjacentHTML('afterbegin', `<div style="margin:8px 0;padding:12px;background:#1a2a10;border:1px solid #4a7020;border-radius:8px;font-family:var(--mono);font-size:11px;color:#90c040">⚙ Proxy non configuré — Entrez l'URL du Worker dans le champ ci-dessous pour activer l'IA</div>`);
   const chatMsgs = document.getElementById('chat-messages');
   if(chatMsgs) { const el=document.createElement('div'); el.innerHTML=warn; chatMsgs.appendChild(el); }
 }
@@ -1550,6 +1560,49 @@ function openMobSidebar(){const sb=document.getElementById('main-sidebar'),bd=do
 function closeMobSidebar(){const sb=document.getElementById('main-sidebar'),bd=document.getElementById('mob-backdrop');if(sb)sb.classList.remove('mob-open');if(bd)bd.classList.remove('open');document.body.style.overflow='';}
 // Hide bottom nav when keyboard opens (avoid layout chaos on mobile)
 window.addEventListener('resize',()=>{const mn=document.getElementById('mob-tabs');if(mn) mn.style.display=(window.innerHeight<400)?'none':'flex';});
+
+// ═══ PROXY URL MANAGEMENT ════════════════════════════════════════
+function updateProxyUrl(val) {
+  const url = val.trim();
+  // Update the global variable at runtime
+  window._PROXY_URL_OVERRIDE = url;
+  const statusEl = document.getElementById('proxy-status');
+  if (!statusEl) return;
+  if (url && url.startsWith('https://')) {
+    statusEl.style.color = 'var(--green)';
+    statusEl.textContent = '✓ Proxy configuré — IA activée';
+    try { sessionStorage.setItem('cx_proxy_url', url); } catch(e) {}
+    // Dismiss the proxy warning banner if visible
+    const warn = document.getElementById('proxy-warn');
+    if (warn) warn.style.display = 'none';
+  } else if (url) {
+    statusEl.style.color = 'var(--yellow)';
+    statusEl.textContent = '⚠ URL invalide (doit commencer par https://)';
+  } else {
+    statusEl.style.color = 'var(--red)';
+    statusEl.textContent = '⚠ Non configuré — fonctions IA désactivées';
+  }
+}
+
+function getProxyUrl() {
+  // Priority: runtime override > PROXY_URL constant
+  return window._PROXY_URL_OVERRIDE || PROXY_URL || '';
+}
+
+// Load saved proxy URL from sessionStorage on init
+(function() {
+  try {
+    const saved = sessionStorage.getItem('cx_proxy_url');
+    if (saved) {
+      window._PROXY_URL_OVERRIDE = saved;
+      // Will be applied once DOM is ready
+      document.addEventListener('DOMContentLoaded', () => {
+        const inp = document.getElementById('proxy-url-input');
+        if (inp) { inp.value = saved; updateProxyUrl(saved); }
+      });
+    }
+  } catch(e) {}
+})();
 
 // ═══ COMPARE ═════════
 function buildCompareTab(){
@@ -1957,7 +2010,12 @@ async function sendMessage(forcedText) {
 
   } catch (err) {
     removeTyping(typingId);
-    appendMessage('bot', '⚠️ Erreur de connexion à l\'API. Vérifiez votre connexion et réessayez.');
+    const isProxyMissing = !PROXY_URL || err.message?.includes('Proxy non configuré');
+    if (isProxyMissing) {
+      appendMessage('bot', `🔧 **Proxy Cloudflare non configuré**\n\nPour activer le Conseiller IA, il faut déployer le proxy en 3 étapes :\n\n1. Aller sur **workers.cloudflare.com** → créer un compte gratuit\n2. Créer un Worker → coller le contenu de \`cloudflare-worker.js\`\n3. Ajouter le secret \`ANTHROPIC_API_KEY\` dans Settings → Variables\n4. Copier l'URL du Worker (ex: \`https://cx-proxy.xxx.workers.dev\`)\n5. Mettre cette URL dans la variable \`PROXY_URL\` du fichier \`index.html\` ligne ~820`);
+    } else {
+      appendMessage('bot', `⚠️ Erreur API : ${err.message || 'connexion impossible'}. Vérifiez que le Worker Cloudflare est actif et que la clé API est valide.`);
+    }
   }
 
   advisorBusy = false;
