@@ -1760,6 +1760,7 @@ function switchTab(t){
   const fab=document.getElementById('mob-filter-btn');
   if(fab) fab.style.display=(t==='matrix'&&window.innerWidth<=768)?'flex':'none';
   if(t==='pricing') renderPricing();
+  if(t==='kpi') renderKpiTab();
   if(t==='agentic') renderAgentic();
   if(t!=='matrix') closeMobSidebar();
   // sync AG sub-tab labels with lang
