@@ -505,6 +505,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);overflow-x:h
 .sidebar.mob-open{display:block!important;position:fixed;top:0;left:0;height:100%;width:85%;max-width:320px;z-index:310;overflow-y:auto;box-shadow:4px 0 24px rgba(10,20,40,.25);animation:slideInLeft .25s ease}
 @keyframes slideInLeft{from{transform:translateX(-100%)}to{transform:translateX(0)}}
 
+/* ── Mobile elements — hidden on desktop by default ── */
+.mob-tab-shortcuts{display:none}
 /* ── Mobile filter trigger button ── */
 .mob-filter-btn{display:none;position:fixed;bottom:80px;right:16px;z-index:150;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue2));border:none;color:white;font-size:20px;box-shadow:0 4px 20px rgba(26,107,204,.45);cursor:pointer;align-items:center;justify-content:center;transition:transform .2s}
 .mob-filter-btn:active{transform:scale(.93)}
@@ -794,11 +796,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);overflow-x:h
 <button class="mob-filter-btn" id="mob-filter-btn" onclick="openMobSidebar()" title="Filtres">⊟</button>
 <!-- Mobile: bottom tab bar -->
 <div class="mob-tab-shortcuts" id="mob-tabs">
-  <button class="mob-tab-btn active" id="mobt-matrix" onclick="switchTab('matrix')"><span class="mob-tab-icon">◧</span>Matrice</button>
-  <button class="mob-tab-btn" id="mobt-compare" onclick="switchTab('compare')"><span class="mob-tab-icon">⊞</span>Comparer</button>
-  <button class="mob-tab-btn" id="mobt-pricing" onclick="switchTab('pricing')"><span class="mob-tab-icon">💰</span>Tarifs</button>
-  <button class="mob-tab-btn" id="mobt-agentic" onclick="switchTab('agentic')"><span class="mob-tab-icon">🤖</span>Agentique</button>
-  <button class="mob-tab-btn" id="mobt-advisor" onclick="switchTab('advisor')"><span class="mob-tab-icon">💬</span>Conseil</button>
+  <button class="mob-tab-btn active" id="mobt-matrix" onclick="switchTab('matrix')"><span class="mob-tab-icon">◧</span><span data-i="mobMatrix">Matrice</span></button>
+  <button class="mob-tab-btn" id="mobt-compare" onclick="switchTab('compare')"><span class="mob-tab-icon">⊞</span><span data-i="mobCompare">Comparer</span></button>
+  <button class="mob-tab-btn" id="mobt-pricing" onclick="switchTab('pricing')"><span class="mob-tab-icon">💰</span><span data-i="mobPricing">Tarifs</span></button>
+  <button class="mob-tab-btn" id="mobt-agentic" onclick="switchTab('agentic')"><span class="mob-tab-icon">🤖</span><span data-i="mobAgentic">Agentique</span></button>
+  <button class="mob-tab-btn" id="mobt-advisor" onclick="switchTab('advisor')"><span class="mob-tab-icon">💬</span><span data-i="mobAdvisor">Conseil</span></button>
 </div>
   <div class="logo">
     <div class="logo-mark">CX</div>
@@ -824,8 +826,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);overflow-x:h
   <div class="tab active" id="tab-matrix" onclick="switchTab('matrix')">◧ <span data-i="tabMatrix">Matrice Fonctionnelle</span><div class="tab-badge" id="tc-matrix">0</div></div>
   <div class="tab" id="tab-compare" onclick="switchTab('compare')">⊞ <span data-i="tabCompare">Tableau Comparatif</span><div class="tab-badge" id="tc-compare">0</div></div>
   <div class="tab" id="tab-agent" onclick="switchTab('agent')">⚡ <span data-i="tabAgent">Agent IA Veille</span><div class="tab-badge" id="tc-agent">0</div></div>
-  <div class="tab" id="tab-pricing" onclick="switchTab('pricing')">💰 <span>Tarifs & TCO</span><div class="tab-badge" id="tc-pricing" style="background:linear-gradient(135deg,#e8900a,#d45d10);color:white">NEW</div></div>
-  <div class="tab" id="tab-agentic" onclick="switchTab('agentic')">🤖 <span>Agentique IA</span><div class="tab-badge" id="tc-agentic" style="background:linear-gradient(135deg,#6c3bcc,#0891b2);color:white">NEW</div></div>
+  <div class="tab" id="tab-pricing" onclick="switchTab('pricing')">💰 <span data-i="tabPricing">Tarifs & TCO</span><div class="tab-badge" id="tc-pricing" style="background:linear-gradient(135deg,#e8900a,#d45d10);color:white">NEW</div></div>
+  <div class="tab" id="tab-agentic" onclick="switchTab('agentic')">🤖 <span data-i="tabAgentic">Agentique IA</span><div class="tab-badge" id="tc-agentic" style="background:linear-gradient(135deg,#6c3bcc,#0891b2);color:white">NEW</div></div>
   <div class="tab" id="tab-advisor" onclick="switchTab('advisor')">💬 <span data-i="tabAdvisor">Conseiller IA</span><div class="tab-badge" id="tc-advisor" style="background:linear-gradient(135deg,var(--blue),var(--purple));color:white">AI</div></div>
 </nav>
 
@@ -923,7 +925,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);overflow-x:h
           </select>
         </div>
         <div class="ap-section">
-          <div class="ap-label">Source All4Customer</div>
+          <div class="ap-label" data-i="a4cLabel">Source All4Customer</div>
           <div style="padding:10px;background:var(--blue-pale);border-radius:var(--radius-sm);border:1px solid rgba(26,107,204,.15)">
             <div style="font-family:var(--mono);font-size:10px;color:var(--blue);margin-bottom:3px">all4customer-paris.com/exposants</div>
             <div style="font-size:11px;color:var(--text3)" data-i="a4cSrc">5 pages · scan automatique · 37 éditeurs qualifiés</div>
@@ -934,14 +936,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);overflow-x:h
           <div class="api-info-name">claude-sonnet-4-20250514</div>
           <div class="api-info-sub" data-i="apiSub">Web search activé · Analyse sémantique profonde</div>
           <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
-            <div style="font-size:10px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">🔧 URL Proxy Cloudflare</div>
+            <div style="font-size:10px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px" data-i="proxyLabel">🔧 URL Proxy Cloudflare</div>
             <input type="text" id="proxy-url-input"
               placeholder="https://cx-proxy.xxx.workers.dev"
               style="width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:var(--mono);font-size:10px;color:var(--text);background:var(--surface2);outline:none;transition:border-color .2s"
               oninput="updateProxyUrl(this.value)"
               onfocus="this.style.borderColor='var(--blue)'"
               onblur="this.style.borderColor='var(--border)'">
-            <div id="proxy-status" style="font-size:10px;margin-top:4px;color:var(--red)">⚠ Non configuré — fonctions IA désactivées</div>
+            <div id="proxy-status" data-i="proxyNotSet" style="font-size:10px;margin-top:4px;color:var(--red)">⚠ Non configuré — fonctions IA désactivées</div>
           </div>
         </div>
       </div>
@@ -977,17 +979,17 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);overflow-x:h
     <div class="pricing-layout">
       <div class="pricing-toolbar">
         <div class="pricing-toolbar-left">
-          <div class="price-filter-pill active" data-pf="all" onclick="setPriceFilter('all')">Tous (43)</div>
-          <div class="price-filter-pill" data-pf="per-seat" onclick="setPriceFilter('per-seat')">💺 Par siège</div>
-          <div class="price-filter-pill" data-pf="usage" onclick="setPriceFilter('usage')">📊 À l'usage</div>
-          <div class="price-filter-pill" data-pf="hybrid" onclick="setPriceFilter('hybrid')">🔀 Hybride</div>
-          <div class="price-filter-pill" data-pf="quote" onclick="setPriceFilter('quote')">📋 Sur devis</div>
+          <div class="price-filter-pill active" data-pf="all" onclick="setPriceFilter('all')" data-i="pfAll">Tous (43)</div>
+          <div class="price-filter-pill" data-pf="per-seat" onclick="setPriceFilter('per-seat')" data-i="pfSeat">💺 Par siège</div>
+          <div class="price-filter-pill" data-pf="usage" onclick="setPriceFilter('usage')" data-i="pfUsage">📊 À l'usage</div>
+          <div class="price-filter-pill" data-pf="hybrid" onclick="setPriceFilter('hybrid')" data-i="pfHybrid">🔀 Hybride</div>
+          <div class="price-filter-pill" data-pf="quote" onclick="setPriceFilter('quote')" data-i="pfQuote">📋 Sur devis</div>
         </div>
         <div class="model-legend">
-          <div class="ml-item"><div class="ml-dot" style="background:var(--blue)"></div>Par siège/agent/mois</div>
-          <div class="ml-item"><div class="ml-dot" style="background:var(--green)"></div>À l'usage (pay-as-you-go)</div>
-          <div class="ml-item"><div class="ml-dot" style="background:var(--purple)"></div>Hybride siège + usage</div>
-          <div class="ml-item"><div class="ml-dot" style="background:var(--text4)"></div>Sur devis uniquement</div>
+          <div class="ml-item"><div class="ml-dot" style="background:var(--blue)"></div><span data-i="legSeat">Par siège/agent/mois</span></div>
+          <div class="ml-item"><div class="ml-dot" style="background:var(--green)"></div><span data-i="legUsage">À l'usage (pay-as-you-go)</span></div>
+          <div class="ml-item"><div class="ml-dot" style="background:var(--purple)"></div><span data-i="legHybrid">Hybride siège + usage</span></div>
+          <div class="ml-item"><div class="ml-dot" style="background:var(--text4)"></div><span data-i="legQuote">Sur devis uniquement</span></div>
         </div>
       </div>
       <div class="pricing-body" id="pricing-body"></div>
@@ -1162,6 +1164,11 @@ const I18N = {
     scaleAll:'Toutes tailles',scaleSME:'PME (1–100)',scaleMid:'Midmarket (100–1k)',scaleEnt:'Enterprise (1k+)',
     scopeReleases:'Release notes uniquement',scopeFeatures:'Fonctionnalités + releases',scopeFull:'Analyse complète',
     freqManual:'Manuel',freqWeekly:'Hebdomadaire',freqMonthly:'Mensuel',
+    tabPricing:'Tarifs & TCO',tabAgentic:'Agentique IA',
+    mobMatrix:'Matrice',mobCompare:'Comparer',mobPricing:'Tarifs',mobAgentic:'Agentique',mobAdvisor:'Conseil',
+    pfAll:'Tous (43)',pfSeat:'💺 Par siège',pfUsage:'📊 À l\'usage',pfHybrid:'🔀 Hybride',pfQuote:'📋 Sur devis',
+    legSeat:'Par siège/agent/mois',legUsage:'À l\'usage (pay-as-you-go)',legHybrid:'Hybride siège + usage',legQuote:'Sur devis uniquement',
+    a4cLabel:'Source All4Customer',proxyLabel:'🔧 URL Proxy Cloudflare',proxyNotSet:'⚠ Non configuré — fonctions IA désactivées',proxyOk:'✓ Proxy configuré — IA activée',proxyBad:'⚠ URL invalide (doit commencer par https://)',
     hdrStatus:'Agent actif',bannerText:'Données actualisées sept 2026 · Sources : release notes officielles, sites éditeurs, All4Customer 2026',bannerDate:'Màj : 22 sept 2026',
     notesTitle:'NOTES EXPERTES',descTitle:'Description',releaseTitle:'Dernières évolutions (Release Notes)',
     native:'Natif',partial:'Partiel',absent:'Absent',roadmap:'Roadmap',
@@ -1199,6 +1206,11 @@ const I18N = {
     scaleAll:'All sizes',scaleSME:'SME (1–100)',scaleMid:'Midmarket (100–1k)',scaleEnt:'Enterprise (1k+)',
     scopeReleases:'Release notes only',scopeFeatures:'Features + releases',scopeFull:'Full site + docs analysis',
     freqManual:'Manual only',freqWeekly:'Weekly',freqMonthly:'Monthly',
+    tabPricing:'Pricing & TCO',tabAgentic:'Agentic AI',
+    mobMatrix:'Matrix',mobCompare:'Compare',mobPricing:'Pricing',mobAgentic:'Agentic',mobAdvisor:'Advisor',
+    pfAll:'All (43)',pfSeat:'💺 Per seat',pfUsage:'📊 Pay-as-you-go',pfHybrid:'🔀 Hybrid',pfQuote:'📋 On request',
+    legSeat:'Per seat/agent/month',legUsage:'Pay-as-you-go (usage-based)',legHybrid:'Hybrid seat + usage',legQuote:'On request only',
+    a4cLabel:'Source All4Customer',proxyLabel:'🔧 Cloudflare Worker URL',proxyNotSet:'⚠ Not configured — AI features disabled',proxyOk:'✓ Proxy configured — AI enabled',proxyBad:'⚠ Invalid URL (must start with https://)',
     hdrStatus:'Agent active',bannerText:'Updated Sep 2026 · Sources: official release notes, vendor sites, All4Customer 2026',bannerDate:'Updated: Sep 22, 2026',
     notesTitle:'EXPERT NOTES',descTitle:'Description',releaseTitle:'Latest updates (Release Notes)',
     native:'Native',partial:'Partial',absent:'N/A',roadmap:'Roadmap',
@@ -1518,6 +1530,14 @@ function setLang(l){
   document.getElementById('btn-fr').className='lang-btn'+(l==='fr'?' active':'');
   document.getElementById('btn-en').className='lang-btn'+(l==='en'?' active':'');
   applyI18N(); applyFilters(); buildFeatTree(); buildAgentVendors(); buildCompareTab();
+  // Re-render dynamic tabs so they switch language
+  agRendered={}; // reset agentic cache so all sub-tabs re-render
+  // Re-render currently active agentic sub-tab if visible
+  const agBody=document.getElementById('agentic-body');
+  if(agBody){agBody.innerHTML='';renderAgentic();}
+  // Re-render pricing if already rendered
+  if(document.getElementById('view-pricing')?.classList.contains('active')) renderPricing();
+  syncAgLabels();
 }
 function applyI18N(){
   const t=I18N[lang];
@@ -1729,17 +1749,17 @@ function updateProxyUrl(val) {
   if (!statusEl) return;
   if (url && url.startsWith('https://')) {
     statusEl.style.color = 'var(--green)';
-    statusEl.textContent = '✓ Proxy configuré — IA activée';
+    statusEl.textContent = I18N[lang]?.proxyOk || '✓ Proxy configured — AI enabled';
     try { sessionStorage.setItem('cx_proxy_url', url); } catch(e) {}
     // Dismiss the proxy warning banner if visible
     const warn = document.getElementById('proxy-warn');
     if (warn) warn.style.display = 'none';
   } else if (url) {
     statusEl.style.color = 'var(--yellow)';
-    statusEl.textContent = '⚠ URL invalide (doit commencer par https://)';
+    statusEl.textContent = I18N[lang]?.proxyBad || '⚠ Invalid URL (must start with https://)';
   } else {
     statusEl.style.color = 'var(--red)';
-    statusEl.textContent = '⚠ Non configuré — fonctions IA désactivées';
+    statusEl.textContent = I18N[lang]?.proxyNotSet || '⚠ Not configured — AI features disabled';
   }
 }
 
