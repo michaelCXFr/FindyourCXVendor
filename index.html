@@ -799,6 +799,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);overflow-x:h
   <button class="mob-tab-btn active" id="mobt-matrix" onclick="switchTab('matrix')"><span class="mob-tab-icon">◧</span><span data-i="mobMatrix">Matrice</span></button>
   <button class="mob-tab-btn" id="mobt-compare" onclick="switchTab('compare')"><span class="mob-tab-icon">⊞</span><span data-i="mobCompare">Comparer</span></button>
   <button class="mob-tab-btn" id="mobt-pricing" onclick="switchTab('pricing')"><span class="mob-tab-icon">💰</span><span data-i="mobPricing">Tarifs</span></button>
+  <button class="mob-tab-btn" id="mobt-kpi" onclick="switchTab('kpi')"><span class="mob-tab-icon">🎯</span><span data-i="mobKpi">KPIs</span></button>
   <button class="mob-tab-btn" id="mobt-agentic" onclick="switchTab('agentic')"><span class="mob-tab-icon">🤖</span><span data-i="mobAgentic">Agentique</span></button>
   <button class="mob-tab-btn" id="mobt-advisor" onclick="switchTab('advisor')"><span class="mob-tab-icon">💬</span><span data-i="mobAdvisor">Conseil</span></button>
 </div>
@@ -827,6 +828,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);overflow-x:h
   <div class="tab" id="tab-compare" onclick="switchTab('compare')">⊞ <span data-i="tabCompare">Tableau Comparatif</span><div class="tab-badge" id="tc-compare">0</div></div>
   <div class="tab" id="tab-agent" onclick="switchTab('agent')">⚡ <span data-i="tabAgent">Agent IA Veille</span><div class="tab-badge" id="tc-agent">0</div></div>
   <div class="tab" id="tab-pricing" onclick="switchTab('pricing')">💰 <span data-i="tabPricing">Tarifs & TCO</span><div class="tab-badge" id="tc-pricing" style="background:linear-gradient(135deg,#e8900a,#d45d10);color:white">NEW</div></div>
+  <div class="tab" id="tab-kpi" onclick="switchTab('kpi')">🎯 <span data-i="tabKpi">IA → KPIs &amp; Éditeurs</span><div class="tab-badge" id="tc-kpi" style="background:linear-gradient(135deg,#0d9e6e,#0891b2);color:white">NEW</div></div>
   <div class="tab" id="tab-agentic" onclick="switchTab('agentic')">🤖 <span data-i="tabAgentic">Agentique IA</span><div class="tab-badge" id="tc-agentic" style="background:linear-gradient(135deg,#6c3bcc,#0891b2);color:white">NEW</div></div>
   <div class="tab" id="tab-advisor" onclick="switchTab('advisor')">💬 <span data-i="tabAdvisor">Conseiller IA</span><div class="tab-badge" id="tc-advisor" style="background:linear-gradient(135deg,var(--blue),var(--purple));color:white">AI</div></div>
 </nav>
@@ -996,6 +998,34 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);overflow-x:h
     </div>
   </div><!-- /view-pricing -->
 
+  <!-- KPI VIEW -->
+  <div class="view" id="view-kpi">
+    <div class="kpi-layout">
+      <div class="kpi-top-bar">
+        <span class="kpi-top-title" id="kpi-filter-label">Filtrer par KPI :</span>
+        <div class="kpi-pill kp-fcr" data-kpi="fcr" onclick="setKpiFilter('fcr')">&#127919; FCR</div>
+        <div class="kpi-pill kp-aht" data-kpi="aht" onclick="setKpiFilter('aht')">&#9201; AHT</div>
+        <div class="kpi-pill kp-rcr" data-kpi="rcr" onclick="setKpiFilter('rcr')">&#128260; Repeat Contact</div>
+        <div class="kpi-pill kp-csat" data-kpi="csat" onclick="setKpiFilter('csat')">&#128522; CSAT</div>
+        <div class="kpi-pill kp-nps" data-kpi="nps" onclick="setKpiFilter('nps')">&#128205; NPS</div>
+        <div class="kpi-pill kp-cpc" data-kpi="cpc" onclick="setKpiFilter('cpc')">&#128176; Co&#251;t/Contact</div>
+        <div class="kpi-pill kp-ex" data-kpi="ex" onclick="setKpiFilter('ex')">&#128150; EX</div>
+        <div class="kpi-pill" onclick="setKpiFilter(null)" style="margin-left:auto" id="kpi-reset-pill">&#10006; Réinit.</div>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-matrix-wrap" id="kpi-matrix-wrap"></div>
+        <div class="kpi-vendor-panel" id="kpi-vendor-panel">
+          <div class="kvp-placeholder" id="kvp-placeholder">
+            <div class="kvp-placeholder-icon">&#128249;</div>
+            <div class="kvp-placeholder-title" id="kvp-ph-title">Sélectionnez un cas d'usage</div>
+            <div class="kvp-placeholder-sub" id="kvp-ph-sub">Cliquez sur une ligne de la matrice pour voir quels éditeurs proposent cette fonctionnalité IA et leur niveau de couverture.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /view-kpi -->
+
+
   <!-- AGENTIC VIEW -->
   <div class="view" id="view-agentic">
     <div class="agentic-layout">
@@ -1164,11 +1194,11 @@ const I18N = {
     scaleAll:'Toutes tailles',scaleSME:'PME (1–100)',scaleMid:'Midmarket (100–1k)',scaleEnt:'Enterprise (1k+)',
     scopeReleases:'Release notes uniquement',scopeFeatures:'Fonctionnalités + releases',scopeFull:'Analyse complète',
     freqManual:'Manuel',freqWeekly:'Hebdomadaire',freqMonthly:'Mensuel',
-    tabPricing:'Tarifs & TCO',tabAgentic:'Agentique IA',
-    mobMatrix:'Matrice',mobCompare:'Comparer',mobPricing:'Tarifs',mobAgentic:'Agentique',mobAdvisor:'Conseil',
+    tabKpi:'IA → KPIs & Éditeurs',tabPricing:'Tarifs & TCO',tabAgentic:'Agentique IA',
+    mobKpi:'KPIs',mobMatrix:'Matrice',mobCompare:'Comparer',mobPricing:'Tarifs',mobAgentic:'Agentique',mobAdvisor:'Conseil',
     pfAll:'Tous (43)',pfSeat:'💺 Par siège',pfUsage:'📊 À l\'usage',pfHybrid:'🔀 Hybride',pfQuote:'📋 Sur devis',
     legSeat:'Par siège/agent/mois',legUsage:'À l\'usage (pay-as-you-go)',legHybrid:'Hybride siège + usage',legQuote:'Sur devis uniquement',
-    a4cLabel:'Source All4Customer',proxyLabel:'🔧 URL Proxy Cloudflare',proxyNotSet:'⚠ Non configuré — fonctions IA désactivées',proxyOk:'✓ Proxy configuré — IA activée',proxyBad:'⚠ URL invalide (doit commencer par https://)',
+    a4cLabel:'Source All4Customer',kpiDisclaimer:'Impacts basés sur le benchmark interne. Scores éditeurs = estimations expertes non vérifiées.',proxyLabel:'🔧 URL Proxy Cloudflare',proxyNotSet:'⚠ Non configuré — fonctions IA désactivées',proxyOk:'✓ Proxy configuré — IA activée',proxyBad:'⚠ URL invalide (doit commencer par https://)',
     hdrStatus:'Agent actif',bannerText:'Données actualisées sept 2026 · Sources : release notes officielles, sites éditeurs, All4Customer 2026',bannerDate:'Màj : 22 sept 2026',
     notesTitle:'NOTES EXPERTES',descTitle:'Description',releaseTitle:'Dernières évolutions (Release Notes)',
     native:'Natif',partial:'Partiel',absent:'Absent',roadmap:'Roadmap',
@@ -1206,11 +1236,11 @@ const I18N = {
     scaleAll:'All sizes',scaleSME:'SME (1–100)',scaleMid:'Midmarket (100–1k)',scaleEnt:'Enterprise (1k+)',
     scopeReleases:'Release notes only',scopeFeatures:'Features + releases',scopeFull:'Full site + docs analysis',
     freqManual:'Manual only',freqWeekly:'Weekly',freqMonthly:'Monthly',
-    tabPricing:'Pricing & TCO',tabAgentic:'Agentic AI',
-    mobMatrix:'Matrix',mobCompare:'Compare',mobPricing:'Pricing',mobAgentic:'Agentic',mobAdvisor:'Advisor',
+    tabKpi:'AI → KPIs & Vendors',tabPricing:'Pricing & TCO',tabAgentic:'Agentic AI',
+    mobKpi:'KPIs',mobMatrix:'Matrix',mobCompare:'Compare',mobPricing:'Pricing',mobAgentic:'Agentic',mobAdvisor:'Advisor',
     pfAll:'All (43)',pfSeat:'💺 Per seat',pfUsage:'📊 Pay-as-you-go',pfHybrid:'🔀 Hybrid',pfQuote:'📋 On request',
     legSeat:'Per seat/agent/month',legUsage:'Pay-as-you-go (usage-based)',legHybrid:'Hybrid seat + usage',legQuote:'On request only',
-    a4cLabel:'Source All4Customer',proxyLabel:'🔧 Cloudflare Worker URL',proxyNotSet:'⚠ Not configured — AI features disabled',proxyOk:'✓ Proxy configured — AI enabled',proxyBad:'⚠ Invalid URL (must start with https://)',
+    a4cLabel:'Source All4Customer',kpiDisclaimer:'Impacts based on internal benchmark. Vendor scores = unverified expert estimates.',proxyLabel:'🔧 Cloudflare Worker URL',proxyNotSet:'⚠ Not configured — AI features disabled',proxyOk:'✓ Proxy configured — AI enabled',proxyBad:'⚠ Invalid URL (must start with https://)',
     hdrStatus:'Agent active',bannerText:'Updated Sep 2026 · Sources: official release notes, vendor sites, All4Customer 2026',bannerDate:'Updated: Sep 22, 2026',
     notesTitle:'EXPERT NOTES',descTitle:'Description',releaseTitle:'Latest updates (Release Notes)',
     native:'Native',partial:'Partial',absent:'N/A',roadmap:'Roadmap',
@@ -1537,6 +1567,7 @@ function setLang(l){
   if(agBody){agBody.innerHTML='';renderAgentic();}
   // Re-render pricing if already rendered
   if(document.getElementById('view-pricing')?.classList.contains('active')) renderPricing();
+  if(document.getElementById('view-kpi')?.classList.contains('active')){kpiRendered=false;renderKpiMatrix();}
   syncAgLabels();
 }
 function applyI18N(){
@@ -1976,6 +2007,422 @@ function buildAgUseCase(){const fr=lang!=='en';const order=['cognigy','kore','pa
 function buildAgTCO(){const fr=lang!=='en';const hyps=[{fr:'Volume annuel adressable',en:'Annual addressable volume',v:'300 000',u:fr?'appels':'calls'},{fr:'Durée moy. appel IA',en:'Avg. AI call duration',v:'2.5',u:'min'},{fr:'Taux automatisation cible',en:'Target automation rate',v:'45%',u:'(ann. 1)'},{fr:'Coût minute conseiller',en:'Agent cost per minute',v:'0.85€',u:'/min'},{fr:'Appels automatisés/an',en:'Automated calls/year',v:'135 000',u:''},{fr:'Coût conseiller évité (3 ans)',en:'Avoided agent cost (3y)',v:'~1.2M€',u:''}];const hh=hyps.map(h=>`<div class="hyp-item"><div class="hyp-label">${fr?h.fr:h.en}</div><div class="hyp-val">${h.v}</div><div class="hyp-unit">${h.u}</div></div>`).join('');const pc=AG_PRICING.map(p=>{const s=AG_SOLUTIONS.find(x=>x.id===p.id);const ll=p.lines.map(l=>`<div class="ag-pc-line"><span class="ag-pc-line-label">${fr?l.fr:l.en}</span><span class="ag-pc-line-val">${l.val}</span></div>`).join('');return`<div class="ag-price-card"><div class="ag-pc-top"><img src="${s.logo}" style="width:28px;height:28px;border-radius:6px;border:1px solid var(--border);object-fit:contain;padding:2px" onerror="this.style.display='none'"><span class="ag-pc-name">${s.name} ${s.country}</span><span class="ag-pc-model">${p.model[fr?'fr':'en']}</span></div><div class="ag-pc-lines">${ll}</div><div class="ag-pc-warning">⚠ ${p.warning[fr?'fr':'en']}</div></div>`;}).join('');return`<div class="tco-section"><div class="tco-hd"><div style="font-size:15px;font-weight:800;color:var(--text)">💰 ${fr?'Modèle TCO 3 ans — Hypothèses de base':'3-Year TCO Model — Base assumptions'}</div><div style="font-size:11px;color:var(--text3);margin-top:4px">${fr?'Aucun éditeur ne publie de grille tarifaire complète. Les ordres de grandeur sont des estimations tierces à confirmer en négociation.':'No vendor publishes a complete pricing grid. Figures are third-party estimates to confirm in negotiation.'}</div></div><div class="tco-hypotheses">${hh}</div><div class="ag-pricing-cards">${pc}</div><div style="padding:12px 20px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);font-style:italic">${fr?'Le modèle ne valorise pas les gains indirects (réduction abandon, 24/7, report recrutements) qui pèsent souvent autant que l\'économie de minutes.':'The model does not capture indirect gains (reduced abandonment, 24/7, deferred hiring) which often weigh as much as the minute savings.'}</div></div>`;}
 
 function buildAgRFI(){const fr=lang!=='en';const rows=AG_RFI.map(r=>`<tr><td class="rfi-num">${r.n}</td><td><span class="rfi-theme ${r.tc}">${r.theme[fr?'fr':'en']}</span></td><td>${r.q[fr?'fr':'en']}</td><td style="font-size:10px;color:var(--text3)">${r.rep[fr?'fr':'en']}</td><td class="rfi-weight-high">${fr?'Élevé':'High'}</td></tr>`).join('');return`<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow)"><div class="ag-grid-hd"><div><div class="ag-grid-title">📋 ${fr?'Questionnaire RFI — 18 questions':'RFI Questionnaire — 18 questions'}</div><div class="ag-grid-sub">${fr?'À envoyer aux quatre éditeurs. Réponse attendue = critère d\'acceptation pour l\'évaluation.':'To send to all four vendors. Expected answer = acceptance criterion.'}</div></div></div><div style="overflow-x:auto"><table class="rfi-table" style="min-width:700px"><thead><tr><th style="width:30px">#</th><th style="width:100px">${fr?'Thème':'Theme'}</th><th>${fr?'Question à l\'éditeur':'Question to vendor'}</th><th style="width:200px">${fr?'Réponse attendue':'Expected answer'}</th><th style="width:60px">${fr?'Poids':'Weight'}</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;}
+
+
+// ═══════════════════════════════════════════════════════════════════════
+// KPI TAB — IA → KPIs & Éditeurs
+// Source : fichier AI_et_impacts_métiers.xlsx — benchmark interne
+// ═══════════════════════════════════════════════════════════════════════
+
+const KPI_KEYS   = ['fcr','aht','rcr','csat','nps','cpc','ex'];
+const KPI_LABELS = {fcr:'FCR',aht:'AHT',rcr:'Repeat Contact',csat:'CSAT',nps:'NPS',cpc:'Coût/Contact',ex:'EX'};
+const KPI_COLORS = {fcr:'var(--blue)',aht:'var(--orange)',rcr:'var(--yellow)',csat:'var(--green)',nps:'var(--teal)',cpc:'var(--red)',ex:'var(--purple)'};
+const FAMILY_META = {
+  auto:       {fr:'Automatisation & Self-Service', en:'Automation & Self-Service',      icon:'⚡', cls:'fhd-auto'},
+  quality:    {fr:'Qualité & Rapidité Interaction',en:'Interaction Quality & Speed',    icon:'🎯', cls:'fhd-quality'},
+  personal:   {fr:'Personnalisation',              en:'Personalization',                icon:'👤', cls:'fhd-personal'},
+  supervision:{fr:'Supervision & Management',      en:'Supervision & Management',       icon:'📊', cls:'fhd-supervision'},
+  retention:  {fr:'Rétention & Satisfaction',      en:'Retention & Satisfaction',       icon:'💚', cls:'fhd-retention'}
+};
+
+// 46 AI Use Cases from Excel with feature mapping
+const AI_USE_CASES = [
+  // ── Automation & Self-Service ──────────────────────────────────────
+  {id:'faq_chatbot',family:'auto',
+   fr:'FAQ Chatbots',en:'FAQ Chatbots',
+   desc:{fr:'Chatbots répondant aux questions fréquentes sans agent',en:'Chatbots answering frequent questions without agent'},
+   kpis:{fcr:1,aht:3,rcr:1,csat:1,nps:2,cpc:3,ex:1},
+   features:['selfcare::chatbot','selfcare::kb','selfcare::faq_ai']},
+  {id:'ai_ivr',family:'auto',
+   fr:'IVR IA / Voice IVR',en:'AI IVR / Voice IVR',
+   desc:{fr:'SVI conversationnel langage naturel pour qualifier et router',en:'Conversational IVR in natural language to qualify and route'},
+   kpis:{fcr:1,aht:1,rcr:3,csat:3,nps:2,cpc:1,ex:1},
+   features:['voice::nlu_ivr','selfcare::vbot_sc','ai::vbot']},
+  {id:'self_portal',family:'auto',
+   fr:'Portails self-service',en:'Self-service portals',
+   desc:{fr:'Espaces client pour résoudre les demandes sans contacter le CC',en:'Customer spaces to resolve requests without contacting CC'},
+   kpis:{fcr:3,aht:2,rcr:2,csat:2,nps:3,cpc:3,ex:2},
+   features:['selfcare::portal','selfcare::deflect']},
+  {id:'auto_email',family:'auto',
+   fr:'Réponses email automatiques',en:'Setup of automated email reply',
+   desc:{fr:'Traitement et réponse automatique aux emails simples par IA',en:'AI automatic processing and reply to simple emails'},
+   kpis:{fcr:2,aht:1,rcr:3,csat:2,nps:3,cpc:2,ex:3},
+   features:['selfcare::auto_email','digital::email']},
+  {id:'auto_replies',family:'auto',
+   fr:'Auto-réponses',en:'Auto Replies',
+   desc:{fr:'Déclenchement automatique de réponses selon des règles ou événements',en:'Automatic response triggering based on rules or events'},
+   kpis:{fcr:1,aht:2,rcr:2,csat:3,nps:1,cpc:3,ex:3},
+   features:['selfcare::auto_email','selfcare::proactive']},
+  {id:'voice_recog',family:'auto',
+   fr:'Reconnaissance vocale',en:'Voice recognition',
+   desc:{fr:'Reconnaissance de la parole pour qualifier les appels sans DTMF',en:'Speech recognition to qualify calls without DTMF'},
+   kpis:{fcr:1,aht:3,rcr:1,csat:2,nps:3,cpc:1,ex:3},
+   features:['voice::nlu_ivr','voice::ivr']},
+  {id:'multilingual',family:'auto',
+   fr:'Traduction multilingue',en:'Multilingual translation',
+   desc:{fr:'Traduction automatique pour servir les clients dans leur langue',en:'Automatic translation to serve customers in their language'},
+   kpis:{fcr:2,aht:2,rcr:2,csat:1,nps:3,cpc:3,ex:1},
+   features:['admin::ml']},
+  {id:'smart_routing',family:'auto',
+   fr:'Routage intelligent',en:'Smart routing',
+   desc:{fr:'Routage par IA vers le meilleur agent selon le contexte client',en:'AI routing to best agent based on customer context'},
+   kpis:{fcr:1,aht:3,rcr:2,csat:2,nps:3,cpc:1,ex:3},
+   features:['routing::ai_route','routing::skill','routing::acd']},
+  {id:'intent_detect',family:'auto',
+   fr:"Détection d'intention",en:'Intent detection',
+   desc:{fr:'Classification automatique du motif de contact',en:'Automatic classification of contact reason'},
+   kpis:{fcr:2,aht:1,rcr:1,csat:2,nps:3,cpc:1,ex:2},
+   features:['ai::intent','voice::nlu_ivr']},
+
+  // ── Interaction Quality & Speed ────────────────────────────────────
+  {id:'realtime_suggest',family:'quality',
+   fr:'Suggestions temps réel',en:'Real-time suggestions',
+   desc:{fr:"Suggestions de réponses affichées à l'agent en cours d'interaction",en:'Response suggestions displayed to agent during interaction'},
+   kpis:{fcr:3,aht:3,rcr:2,csat:3,nps:2,cpc:1,ex:3},
+   features:['ai::assist']},
+  {id:'agent_copilot',family:'quality',
+   fr:'Agent Copilot',en:'Agent Copilot',
+   desc:{fr:'Assistant GenAI pour aider agent à résoudre et rédiger',en:'GenAI assistant to help agent resolve and draft'},
+   kpis:{fcr:3,aht:2,rcr:2,csat:1,nps:2,cpc:1,ex:3},
+   features:['ai::assist','ai::genai','ai::summary']},
+  {id:'sentiment',family:'quality',
+   fr:'Détection de sentiment',en:'Sentiment detection',
+   desc:{fr:'Analyse du sentiment client en temps réel',en:'Real-time customer sentiment analysis'},
+   kpis:{fcr:1,aht:2,rcr:2,csat:2,nps:1,cpc:3,ex:2},
+   features:['ai::sentiment']},
+  {id:'intent_recog',family:'quality',
+   fr:"Reconnaissance d'intention",en:'Intent recognition',
+   desc:{fr:'Détection précise du motif et intention pour personnaliser',en:'Precise detection of reason and intention to personalise'},
+   kpis:{fcr:1,aht:2,rcr:3,csat:3,nps:3,cpc:3,ex:3},
+   features:['ai::intent']},
+  {id:'nba',family:'quality',
+   fr:'Next best action / réponse',en:'Next best response / action',
+   desc:{fr:"Recommandation de la meilleure action suivante pour l'agent",en:'Recommendation of the best next action for agent'},
+   kpis:{fcr:1,aht:1,rcr:1,csat:2,nps:1,cpc:1,ex:1},
+   features:['ai::assist','ai::pred']},
+  {id:'auto_summary',family:'quality',
+   fr:"Résumé automatique d'appel",en:'Automatic call summarization',
+   desc:{fr:'Génération automatique du compte-rendu post-interaction par IA',en:'Automatic AI generation of post-interaction summary'},
+   kpis:{fcr:3,aht:3,rcr:3,csat:3,nps:3,cpc:1,ex:2},
+   features:['ai::summary']},
+  {id:'pred_issue',family:'quality',
+   fr:'Analyse prédictive des problèmes',en:'Predictive issue analysis',
+   desc:{fr:"Anticipation des problèmes avant qu'ils impactent le client",en:'Anticipation of issues before they impact the customer'},
+   kpis:{fcr:3,aht:1,rcr:3,csat:3,nps:1,cpc:3,ex:2},
+   features:['ai::pred','analytics::pred_a']},
+  {id:'simulators',family:'quality',
+   fr:'Simulateurs de formation',en:'Training simulators',
+   desc:{fr:'Outils de simulation pour former les agents sur scénarios réels',en:'Simulation tools to train agents on real scenarios'},
+   kpis:{fcr:3,aht:1,rcr:2,csat:1,nps:3,cpc:3,ex:3},
+   features:['wfm::coach']},
+  {id:'coaching',family:'quality',
+   fr:'Coaching appels (live / post)',en:'Call coaching (live / post-call)',
+   desc:{fr:'Coaching temps réel et post-interaction pour améliorer les agents',en:'Real-time and post-interaction coaching to improve agents'},
+   kpis:{fcr:3,aht:2,rcr:1,csat:1,nps:2,cpc:3,ex:2},
+   features:['wfm::coach','wfm::qm','voice::whisper']},
+
+  // ── Personalization ────────────────────────────────────────────────
+  {id:'product_reco',family:'personal',
+   fr:'Recommandations produits',en:'Product recommendations',
+   desc:{fr:'Recommandations personnalisées basées sur le profil client',en:'Personalised recommendations based on customer profile'},
+   kpis:{fcr:3,aht:3,rcr:3,csat:1,nps:3,cpc:1,ex:2},
+   features:['ai::pred','crm::cdp']},
+  {id:'dynamic_promo',family:'personal',
+   fr:'Promotions dynamiques',en:'Dynamic promotions',
+   desc:{fr:'Offres promotionnelles adaptées au client en temps réel',en:'Promotional offers adapted to the customer in real-time'},
+   kpis:{fcr:3,aht:2,rcr:1,csat:3,nps:1,cpc:3,ex:1},
+   features:['ai::pred','crm::cdp']},
+  {id:'need_pred',family:'personal',
+   fr:'Prédiction de besoins',en:'Need prediction',
+   desc:{fr:"Anticipation des besoins basée sur l'analyse comportementale",en:'Needs anticipation based on behavioral analysis'},
+   kpis:{fcr:3,aht:2,rcr:3,csat:1,nps:1,cpc:2,ex:1},
+   features:['ai::pred','crm::v360']},
+  {id:'personal_journey',family:'personal',
+   fr:'Parcours personnalisés',en:'Personalized journeys',
+   desc:{fr:'Orchestration de parcours clients adaptés à chaque profil',en:'Orchestration of customer journeys adapted to each profile'},
+   kpis:{fcr:2,aht:3,rcr:1,csat:3,nps:1,cpc:2,ex:2},
+   features:['crm::journey','crm::v360']},
+  {id:'journey_analysis',family:'personal',
+   fr:'Analyse des parcours',en:'Journey analysis',
+   desc:{fr:'Visualisation et analyse des parcours pour détecter les irritants',en:'Visualisation and analysis of journeys to detect pain points'},
+   kpis:{fcr:3,aht:1,rcr:2,csat:3,nps:1,cpc:2,ex:1},
+   features:['crm::journey','analytics::ia']},
+  {id:'proactive_personal',family:'personal',
+   fr:'Personnalisation proactive',en:'Proactive personalization',
+   desc:{fr:'Prise de contact proactive avant que le client ne contacte le CC',en:'Proactive outreach to customer before they contact the CC'},
+   kpis:{fcr:1,aht:3,rcr:3,csat:3,nps:1,cpc:2,ex:1},
+   features:['selfcare::proactive','ai::pred']},
+  {id:'nbo',family:'personal',
+   fr:'Next best offer',en:'Next best offer',
+   desc:{fr:'Proposition de la meilleure offre commerciale au bon moment',en:'Proposition of the best commercial offer at the right moment'},
+   kpis:{fcr:1,aht:1,rcr:2,csat:2,nps:1,cpc:3,ex:3},
+   features:['ai::pred','ai::assist']},
+  {id:'alt_solutions',family:'personal',
+   fr:'Solutions alternatives',en:'Alternative solutions',
+   desc:{fr:'Suggestion de solutions alternatives quand la demande initiale ne peut être satisfaite',en:'Suggestion of alternatives when initial request cannot be fulfilled'},
+   kpis:{fcr:1,aht:3,rcr:1,csat:3,nps:1,cpc:3,ex:1},
+   features:['ai::assist','selfcare::kb']},
+  {id:'dyn_faq',family:'personal',
+   fr:'FAQ dynamique optimisée',en:'Dynamic FAQ optimization',
+   desc:{fr:'Mise à jour automatique des FAQs basée sur les interactions réelles',en:'Automatic FAQ update based on real interactions'},
+   kpis:{fcr:3,aht:3,rcr:3,csat:3,nps:2,cpc:3,ex:3},
+   features:['selfcare::faq_ai','selfcare::kb']},
+
+  // ── Supervision & Management ───────────────────────────────────────
+  {id:'agent_perf',family:'supervision',
+   fr:'Analyse perf. agents',en:'Agent performance analysis',
+   desc:{fr:'Analyse automatique des performances pour coaching personnalisé',en:'Automatic performance analysis for personalised coaching'},
+   kpis:{fcr:2,aht:1,rcr:1,csat:3,nps:2,cpc:3,ex:3},
+   features:['wfm::qm','ai::auto_qa','wfm::coach']},
+  {id:'atrisk_call',family:'supervision',
+   fr:'Détection appels à risque',en:'At-risk call detection',
+   desc:{fr:'Identification temps réel des appels susceptibles de dégénérer',en:'Real-time identification of calls likely to escalate'},
+   kpis:{fcr:3,aht:2,rcr:2,csat:2,nps:1,cpc:3,ex:2},
+   features:['ai::sentiment','analytics::speech']},
+  {id:'vol_pred',family:'supervision',
+   fr:'Prédiction volumes (forecast)',en:'Call volume prediction (forecast)',
+   desc:{fr:'Prévision des volumes de contacts pour optimiser le planning',en:'Contact volume forecasting to optimise planning'},
+   kpis:{fcr:3,aht:3,rcr:1,csat:3,nps:1,cpc:1,ex:3},
+   features:['wfm::forecast','analytics::pred_a']},
+  {id:'wf_planning',family:'supervision',
+   fr:'Planification workforce',en:'Workforce planning',
+   desc:{fr:'Planification automatique des effectifs basée sur les prévisions',en:'Automatic workforce planning based on forecasts'},
+   kpis:{fcr:2,aht:1,rcr:1,csat:2,nps:2,cpc:3,ex:2},
+   features:['wfm::wfm_n','wfm::sched','wfm::forecast']},
+  {id:'compliance',family:'supervision',
+   fr:'Surveillance conformité',en:'Compliance monitoring',
+   desc:{fr:'Monitoring automatique conformité réglementaire 100% interactions',en:'Automatic regulatory compliance monitoring 100% interactions'},
+   kpis:{fcr:1,aht:2,rcr:2,csat:2,nps:3,cpc:1,ex:2},
+   features:['security::audit','analytics::speech','ai::auto_qa']},
+  {id:'feedback_nlp',family:'supervision',
+   fr:'Analyse NLP des feedbacks',en:'Feedback NLP analysis',
+   desc:{fr:'Analyse sémantique des verbatims et feedbacks clients',en:'Semantic analysis of customer verbatims and feedback'},
+   kpis:{fcr:2,aht:2,rcr:3,csat:1,nps:3,cpc:3,ex:1},
+   features:['analytics::ia','analytics::speech']},
+  {id:'incident_alerts',family:'supervision',
+   fr:'Alertes incidents',en:'Incident alerts',
+   desc:{fr:'Détection et alertes automatiques sur les incidents qualité',en:'Automatic detection and alerts on quality incidents'},
+   kpis:{fcr:1,aht:2,rcr:2,csat:1,nps:1,cpc:3,ex:3},
+   features:['analytics::pred_a','ai::sentiment']},
+  {id:'peak_pred',family:'supervision',
+   fr:'Prédiction des pics',en:'Peak prediction',
+   desc:{fr:'Anticipation des pics de contact pour adapter les ressources',en:'Contact peak anticipation to adapt resources in real-time'},
+   kpis:{fcr:1,aht:1,rcr:3,csat:2,nps:2,cpc:1,ex:1},
+   features:['wfm::forecast','analytics::pred_a']},
+  {id:'omni_analysis',family:'supervision',
+   fr:'Analyse omnicanale',en:'Omnichannel analysis',
+   desc:{fr:'Vue unifiée des performances sur tous les canaux de contact',en:'Unified performance view across all contact channels'},
+   kpis:{fcr:3,aht:3,rcr:3,csat:2,nps:3,cpc:1,ex:1},
+   features:['analytics::ia','analytics::rtdb']},
+
+  // ── Retention & Satisfaction ───────────────────────────────────────
+  {id:'churn_pred',family:'retention',
+   fr:'Prédiction du churn',en:'Churn prediction',
+   desc:{fr:"Identification précoce des clients à risque de résiliation",en:'Early identification of customers at risk of churning'},
+   kpis:{fcr:3,aht:2,rcr:1,csat:3,nps:2,cpc:3,ex:3},
+   features:['ai::pred','crm::cdp']},
+  {id:'dyn_segment',family:'retention',
+   fr:'Segmentation dynamique',en:'Dynamic segmentation',
+   desc:{fr:'Segmentation automatique des clients selon leur comportement',en:'Automatic customer segmentation based on behaviour'},
+   kpis:{fcr:2,aht:3,rcr:3,csat:2,nps:1,cpc:1,ex:2},
+   features:['crm::cdp','ai::pred']},
+  {id:'hv_detect',family:'retention',
+   fr:'Détection clients haute valeur',en:'High-value customer detection',
+   desc:{fr:'Identification et traitement prioritaire des clients haute valeur',en:'Identification and priority handling of high-value customers'},
+   kpis:{fcr:3,aht:2,rcr:2,csat:2,nps:2,cpc:1,ex:3},
+   features:['routing::vip','crm::v360','ai::pred']},
+  {id:'complaint_nlp',family:'retention',
+   fr:'Analyse NLP réclamations',en:'Complaint analysis NLP',
+   desc:{fr:'Analyse automatique du contenu et ton des réclamations',en:'Automatic analysis of complaint content and tone via NLP'},
+   kpis:{fcr:1,aht:1,rcr:2,csat:1,nps:2,cpc:1,ex:2},
+   features:['analytics::speech','analytics::ia','ai::sentiment']},
+  {id:'irritant_detect',family:'retention',
+   fr:'Détection des irritants',en:'Irritant detection',
+   desc:{fr:'Identification des points de friction dans le parcours client',en:'Identification of friction points in the customer journey'},
+   kpis:{fcr:2,aht:2,rcr:2,csat:1,nps:1,cpc:3,ex:3},
+   features:['ai::sentiment','analytics::speech']},
+  {id:'diss_risk',family:'retention',
+   fr:'Risque de dissatisfaction',en:'Dissatisfaction risk detection',
+   desc:{fr:'Détection précoce des signaux de mécontentement',en:'Early detection of dissatisfaction signals before escalation'},
+   kpis:{fcr:2,aht:1,rcr:2,csat:2,nps:3,cpc:2,ex:2},
+   features:['ai::sentiment','ai::pred']},
+  {id:'nps_track',family:'retention',
+   fr:'Suivi NPS',en:'NPS tracking',
+   desc:{fr:'Collecte et analyse automatique du Net Promoter Score',en:'Automatic NPS collection and analysis'},
+   kpis:{fcr:1,aht:3,rcr:1,csat:3,nps:1,cpc:3,ex:2},
+   features:['analytics::csat']},
+  {id:'sat_trends',family:'retention',
+   fr:'Tendances satisfaction',en:'Satisfaction trends',
+   desc:{fr:'Analyse des tendances de satisfaction dans le temps par segment',en:'Satisfaction trend analysis over time by segment'},
+   kpis:{fcr:2,aht:2,rcr:3,csat:1,nps:2,cpc:2,ex:2},
+   features:['analytics::csat','analytics::hist']},
+  {id:'proactive_ret',family:'retention',
+   fr:'Campagnes rétention proactives',en:'Proactive retention campaigns',
+   desc:{fr:"Campagnes sortantes ciblant les clients à risque de churn",en:'Proactive outbound campaigns targeting customers at risk of churn'},
+   kpis:{fcr:3,aht:3,rcr:1,csat:2,nps:2,cpc:3,ex:3},
+   features:['selfcare::proactive','ai::pred']},
+  {id:'weak_signal',family:'retention',
+   fr:'Détection signaux faibles',en:'Weak signal detection',
+   desc:{fr:'Détection de signaux précurseurs de problèmes avant criticité',en:'Detection of precursor signals of problems before they become critical'},
+   kpis:{fcr:1,aht:1,rcr:3,csat:2,nps:1,cpc:2,ex:1},
+   features:['ai::sentiment','analytics::ia','ai::pred']}
+];
+
+// ── Compute vendor score for a use case ─────────────────────────────
+function computeVendorScore(vendor, uc) {
+  const featureIds = uc.features || [];
+  if (!featureIds.length) return 0;
+  let total = 0, count = 0;
+  featureIds.forEach(ref => {
+    const [domain, fid] = ref.split('::');
+    const score = vendor.f?.[domain]?.[fid];
+    if (score !== undefined) { total += score; count++; }
+  });
+  return count ? Math.round(total / count) : 0;
+}
+
+// ── Render KPI tab ──────────────────────────────────────────────────
+let kpiFilter = null;
+let selectedUC = null;
+let kpiRendered = false;
+
+function renderKpiTab() {
+  if (!kpiRendered) {
+    renderKpiMatrix();
+    kpiRendered = true;
+  }
+}
+
+function renderKpiMatrix() {
+  const wrap = document.getElementById('kpi-matrix-wrap');
+  if (!wrap) return;
+  const fr = lang !== 'en';
+  const families = ['auto','quality','personal','supervision','retention'];
+  
+  let html = '';
+  families.forEach(fam => {
+    const meta = FAMILY_META[fam];
+    const cases = AI_USE_CASES.filter(u => u.family === fam);
+    const cols = KPI_KEYS.map(k => {
+      const label = KPI_LABELS[k];
+      const col = KPI_COLORS[k];
+      return `<th style="color:${col};min-width:62px">${label}</th>`;
+    }).join('');
+    
+    const rows = cases.map(uc => {
+      const cells = KPI_KEYS.map(k => {
+        const impact = uc.kpis[k];
+        const hlClass = kpiFilter === k ? ' hl' : '';
+        const title = impact === 1 ? 'Fort' : impact === 2 ? 'Moyen' : 'Faible';
+        return `<td onclick="selectUC('${uc.id}')"><div class="kpi-impact ki-${impact}${hlClass}" title="${title}">${impact}</div></td>`;
+      }).join('');
+      const sel = selectedUC === uc.id ? ' selected' : '';
+      const name = fr ? uc.fr : uc.en;
+      return `<tr class="${sel}" id="ucrow-${uc.id}"><td class="uc-name-cell" onclick="selectUC('${uc.id}')" title="${fr?uc.desc.fr:uc.desc.en}">${name}</td>${cells}</tr>`;
+    }).join('');
+    
+    html += `<div class="family-block">
+      <div class="family-hd ${meta.cls}">${meta.icon} ${fr?meta.fr:meta.en}</div>
+      <table class="uc-table"><thead><tr><th>${fr?'Cas d\'usage IA':'AI Use Case'}</th>${cols}</tr></thead><tbody>${rows}</tbody></table>
+    </div>`;
+  });
+  wrap.innerHTML = html;
+}
+
+function setKpiFilter(kpi) {
+  kpiFilter = kpi;
+  document.querySelectorAll('.kpi-pill[data-kpi]').forEach(p => {
+    p.classList.toggle('active', p.dataset.kpi === kpi);
+  });
+  kpiRendered = false;
+  renderKpiMatrix();
+  if (selectedUC) selectUC(selectedUC);
+}
+
+function selectUC(ucId) {
+  selectedUC = ucId;
+  // Update selected row
+  document.querySelectorAll('.uc-table tr').forEach(r => r.classList.remove('selected'));
+  const row = document.getElementById('ucrow-' + ucId);
+  if (row) { row.classList.add('selected'); row.scrollIntoView({block:'nearest'}); }
+  // Render vendor panel
+  renderVendorPanel(ucId);
+}
+
+function renderVendorPanel(ucId) {
+  const panel = document.getElementById('kpi-vendor-panel');
+  const placeholder = document.getElementById('kvp-placeholder');
+  if (!panel) return;
+  if (placeholder) placeholder.style.display = 'none';
+  
+  const uc = AI_USE_CASES.find(u => u.id === ucId);
+  if (!uc) return;
+  const fr = lang !== 'en';
+  const name = fr ? uc.fr : uc.en;
+  const fm = FAMILY_META[uc.family];
+  const famColor = {auto:'var(--blue)',quality:'var(--green)',personal:'var(--purple)',supervision:'var(--yellow)',retention:'var(--red)'}[uc.family];
+  
+  // Compute vendor scores
+  const scored = VENDORS.map(v => ({v, score: computeVendorScore(v, uc)}))
+    .sort((a,b) => b.score - a.score);
+  const strong = scored.filter(s => s.score >= 70);
+  const partial = scored.filter(s => s.score >= 40 && s.score < 70);
+  const absent  = scored.filter(s => s.score < 40);
+  
+  // KPI chips
+  const kpiChips = KPI_KEYS.map(k => {
+    const imp = uc.kpis[k];
+    const bg  = imp===1?KPI_COLORS[k]:imp===2?'var(--bg2)':'var(--border)';
+    const col = imp===1?'white':imp===2?'var(--text3)':'var(--text4)';
+    const size = imp===1?'12px':'10px';
+    return `<span class="kvp-kpi-chip" style="background:${bg};color:${col};font-size:${size}">${KPI_LABELS[k]} : ${imp===1?(fr?'Fort':'Strong'):imp===2?(fr?'Moyen':'Medium'):(fr?'Faible':'Weak')}</span>`;
+  }).join('');
+  
+  const makeVRow = (s, tier) => {
+    const cls = s.score>=70?'vs-hi':s.score>=40?'vs-md':'vs-lo';
+    const label = s.score>=70?(fr?'Disponible':'Available'):s.score>=40?(fr?'Partiel':'Partial'):(fr?'Limité':'Limited');
+    return `<div class="kvp-vendor-row" onclick="goToVendor('${s.v.id}')">
+      <img src="${s.v.logo}" class="kvp-v-logo" onerror="this.style.display='none'">
+      <div><div class="kvp-v-name">${s.v.name}</div><div class="kvp-v-country">${s.v.country} · ${I18N[lang]?.typeLabels?.[s.v.type]||s.v.type}</div></div>
+      <span class="kvp-v-score ${cls}">${s.score}%</span>
+    </div>`;
+  };
+  
+  const sTitle = fr ? `✅ Disponible (≥70%) — ${strong.length} éditeurs` : `✅ Available (≥70%) — ${strong.length} vendors`;
+  const pTitle = fr ? `⚡ Partiel (40–70%) — ${partial.length} éditeurs` : `⚡ Partial (40–70%) — ${partial.length} vendors`;
+  const aTitle = fr ? `○ Limité (<40%) — ${absent.length} éditeurs` : `○ Limited (<40%) — ${absent.length} vendors`;
+  
+  const btnLabel = fr ? `Voir tous les éditeurs dans la Matrice →` : `View all vendors in the Matrix →`;
+  
+  panel.innerHTML = `
+    <div class="kvp-hd">
+      <div class="kvp-family" style="color:${famColor}">${fm.icon} ${fr?fm.fr:fm.en}</div>
+      <div class="kvp-uc-name">${name}</div>
+      <div class="kvp-desc">${fr?uc.desc.fr:uc.desc.en}</div>
+      <div class="kvp-kpi-row">${kpiChips}</div>
+    </div>
+    <div class="kvp-vlist">
+      ${strong.length ? `<div class="kvp-vsection-title">${sTitle}</div>${strong.map(s=>makeVRow(s,'strong')).join('')}` : ''}
+      ${partial.length ? `<div class="kvp-vsection-title">${pTitle}</div>${partial.map(s=>makeVRow(s,'partial')).join('')}` : ''}
+      ${absent.length ? `<div class="kvp-vsection-title">${aTitle}</div>${absent.map(s=>makeVRow(s,'absent')).join('')}` : ''}
+    </div>
+    <button class="kvp-goto-btn" onclick="goToMatrix()">◧ ${btnLabel}</button>
+    <div class="kpi-legend-strip">
+      <span class="kli"><span style="background:var(--green);width:10px;height:10px;border-radius:50%;display:inline-block"></span>1 = Fort</span>
+      <span class="kli"><span style="background:var(--yellow);width:10px;height:10px;border-radius:50%;display:inline-block"></span>2 = Moyen</span>
+      <span class="kli"><span style="background:var(--border2);width:10px;height:10px;border-radius:50%;display:inline-block"></span>3 = Faible</span>
+      <span style="margin-left:auto;font-style:italic">${fr?'Scores = estimations expertes':'Scores = expert estimates'}</span>
+    </div>`;
+}
+
+function goToVendor(vendorId) {
+  // Switch to matrix and open vendor modal
+  switchTab('matrix');
+  setTimeout(() => openModal(vendorId), 300);
+}
+function goToMatrix() {
+  switchTab('matrix');
+}
 
 // ═══ PRICING DATA ═══════════════════════════════════════════════════════
 
