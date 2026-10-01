@@ -1274,7 +1274,7 @@ const I18N = {
     pfAll:'Tous (43)',pfSeat:'💺 Par siège',pfUsage:'📊 À l\'usage',pfHybrid:'🔀 Hybride',pfQuote:'📋 Sur devis',
     legSeat:'Par siège/agent/mois',legUsage:'À l\'usage (pay-as-you-go)',legHybrid:'Hybride siège + usage',legQuote:'Sur devis uniquement',
     a4cLabel:'Source All4Customer',kpiDisclaimer:'Impacts basés sur le benchmark interne. Scores éditeurs = estimations expertes non vérifiées.',proxyLabel:'🔧 URL Proxy Cloudflare',proxyNotSet:'⚠ Non configuré — fonctions IA désactivées',proxyOk:'✓ Proxy configuré — IA activée',proxyBad:'⚠ URL invalide (doit commencer par https://)',
-    hdrStatus:'Agent actif',bannerText:'Données actualisées sept 2026 · Sources : release notes officielles, sites éditeurs, All4Customer 2026',bannerDate:'Màj : 22 sept 2026',
+    hdrStatus:'Agent actif',bannerText:'Données actualisées oct. 2026 · Sources : release notes officielles, sites éditeurs, All4Customer 2026',bannerDate:'Màj : 1 oct. 2026',
     notesTitle:'NOTES EXPERTES',descTitle:'Description',releaseTitle:'Dernières évolutions (Release Notes)',
     native:'Natif',partial:'Partiel',absent:'Absent',roadmap:'Roadmap',
     typeLabels:{ccaas:'CCaaS',crm:'CRM',mono:'Mono-canal',suite:'Suite CX'},
@@ -1316,7 +1316,7 @@ const I18N = {
     pfAll:'All (43)',pfSeat:'💺 Per seat',pfUsage:'📊 Pay-as-you-go',pfHybrid:'🔀 Hybrid',pfQuote:'📋 On request',
     legSeat:'Per seat/agent/month',legUsage:'Pay-as-you-go (usage-based)',legHybrid:'Hybrid seat + usage',legQuote:'On request only',
     a4cLabel:'Source All4Customer',kpiDisclaimer:'Impacts based on internal benchmark. Vendor scores = unverified expert estimates.',proxyLabel:'🔧 Cloudflare Worker URL',proxyNotSet:'⚠ Not configured — AI features disabled',proxyOk:'✓ Proxy configured — AI enabled',proxyBad:'⚠ Invalid URL (must start with https://)',
-    hdrStatus:'Agent active',bannerText:'Updated Sep 2026 · Sources: official release notes, vendor sites, All4Customer 2026',bannerDate:'Updated: Sep 22, 2026',
+    hdrStatus:'Agent active',bannerText:'Updated Oct 2026 · Sources: official release notes, vendor sites, All4Customer 2026',bannerDate:'Updated: Oct 1, 2026',
     notesTitle:'EXPERT NOTES',descTitle:'Description',releaseTitle:'Latest updates (Release Notes)',
     native:'Native',partial:'Partial',absent:'N/A',roadmap:'Roadmap',
     typeLabels:{ccaas:'CCaaS',crm:'CRM',mono:'Single-channel',suite:'CX Suite'},
@@ -1607,7 +1607,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   applyI18N(); buildFeatTree(); buildCountryFilters(); buildAgentVendors(); applyFilters(); buildCompareTab();
   document.getElementById('tc-compare').textContent=VENDORS.length;
   document.getElementById('banner-count').textContent=VENDORS.length+' éditeurs logiciels qualifiés';
-  document.getElementById('banner-date').textContent='Màj : 22 septembre 2026';
+  document.getElementById('banner-date').textContent='Màj : 1er octobre 2026';
   if(!PROXY_URL) showProxyWarning();
 });
 
